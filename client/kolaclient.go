@@ -19,8 +19,9 @@ func StartClient() {
 	defer conn.Close()
 	c := pb.NewKolaAgentClient(conn)
 
+	args := []string{"echo", "'test123'"}
 	//now try to talk with the server
-	if r, err := c.Get(context.Background(), &pb.KolaRequest{Key: "test"}); err != nil {
+	if r, err := c.Get(context.Background(), &pb.KolaRequest{Key: args}); err != nil {
 		grpclog.Fatalf("could not get message from kola server %v \n", err)
 	} else {
 		grpclog.Infof("Returned Messages as %v \n", r.Props)

@@ -7,7 +7,7 @@ service KolaAgent {
 }
 
 message KolaRequest {
-	string key = 1;
+	repeated string key = 1;
 }
 
 message KolaReply {

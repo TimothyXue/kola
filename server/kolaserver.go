@@ -16,7 +16,7 @@ const (
 type KolaServer struct{}
 
 func (k *KolaServer) Get(ctx context.Context, in *pb.KolaRequest) (*pb.KolaReply, error) {
-	message := []string{"1", "2", "3"}
+	message := in.Key
 	return &pb.KolaReply{Props: message}, nil
 }
 

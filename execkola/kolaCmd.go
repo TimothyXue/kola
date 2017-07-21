@@ -3,7 +3,7 @@ source code are from https://github.com/go-cmd/cmd
 #author: daniel-nichter
 **/
 
-package exec
+package execkola
 
 import (
 	"bufio"
