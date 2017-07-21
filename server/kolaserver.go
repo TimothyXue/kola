@@ -25,7 +25,7 @@ func (k *KolaServer) Get(ctx context.Context, in *pb.KolaRequest) (*pb.KolaReply
 }
 
 func StartServer() {
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
+	lis, err := net.Listen("tcp4", fmt.Sprintf(":%d", port))
 	if err != nil {
 		grpclog.Fatalf("failed to listen: %v \n", err)
 	}
