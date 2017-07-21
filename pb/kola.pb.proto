@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pb;
+
+service KolaAgent {
+	rpc Get (KolaRequest) returns (KolaReply) {}
+}
+
+message KolaRequest {
+	string key = 1;
+}
+
+message KolaReply {
+	repeated string props = 1;
+}
