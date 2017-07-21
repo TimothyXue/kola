@@ -21,7 +21,7 @@ func (k *KolaServer) Get(ctx context.Context, in *pb.KolaRequest) (*pb.KolaReply
 	c := kexec.NewCmd("echo", "'test'")
 	statusChan := c.Start()
 	finalStatus := <-statusChan
-	return &pb.KolaReply{Props: append(message, finalStatus.Stdout)}, nil
+	return &pb.KolaReply{Props: append(message, finalStatus.Stdout...)}, nil
 }
 
 func StartServer() {
