@@ -3,7 +3,7 @@ source code are from https://github.com/go-cmd/cmd
 #author: daniel-nichter
 **/
 
-package execkola
+package exec
 
 import (
 	"bufio"
@@ -50,7 +50,7 @@ type output struct {
 	*sync.Mutex
 }
 
-func newOutput() {
+func newOutput() *output {
 	return &output{
 		buffer: &bytes.Buffer{},
 		lines:  []string{},
@@ -64,7 +64,7 @@ func NewCmd(name string, args ...string) *KolaCmd {
 		Args: args,
 
 		Mutex: &sync.Mutex{},
-		status: {
+		status: Status{
 			Cmd:       name,
 			PID:       0,
 			Completed: false,
@@ -81,7 +81,7 @@ func (c *KolaCmd) run() {
 	}()
 	//setup command
 	cmd := exec.Command(c.Name, c.Args...)
-	cmd.SysProcAttr = &syscall.SysProcAttr{SetPid: true}
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 	c.stdout = newOutput()
 	c.stderr = newOutput()
 	cmd.Stdout = c.stdout
@@ -141,11 +141,11 @@ func (c *KolaCmd) run() {
 	c.Unlock()
 }
 
-func (c *KolaCmd) Status() {
+func (c *KolaCmd) Status() Status {
 	c.Lock()
 	defer c.Unlock()
 	if c.doneChan == nil || !c.started {
-		c.status
+		return c.status
 	}
 
 	if c.done {
@@ -181,7 +181,7 @@ func (c *KolaCmd) Start() <-chan Status {
 	return c.doneChan
 }
 
-func (c *KolaCmd) Stop() {
+func (c *KolaCmd) Stop() error {
 	c.Lock()
 	defer c.Unlock()
 
@@ -203,4 +203,10 @@ func (o *output) dumpLines() []string {
 		o.lines = append(o.lines, s.Text())
 	}
 	return o.lines
+}
+
+func (o *output) Write(p []byte) (int, error) {
+	o.Lock()
+	defer o.Unlock()
+	return o.buffer.Write(p)
 }

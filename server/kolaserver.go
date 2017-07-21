@@ -5,6 +5,7 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
+	"kola/exec"
 	pb "kola/pb"
 	"net"
 )
@@ -17,6 +18,7 @@ type KolaServer struct{}
 
 func (k *KolaServer) Get(ctx context.Context, in *pb.KolaRequest) (*pb.KolaReply, error) {
 	message := in.Key
+
 	return &pb.KolaReply{Props: message}, nil
 }
 
