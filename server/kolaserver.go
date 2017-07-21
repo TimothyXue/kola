@@ -5,7 +5,7 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
-	"kola/exec"
+	kexec "kola/exec"
 	pb "kola/pb"
 	"net"
 )
@@ -18,8 +18,10 @@ type KolaServer struct{}
 
 func (k *KolaServer) Get(ctx context.Context, in *pb.KolaRequest) (*pb.KolaReply, error) {
 	message := in.Key
-
-	return &pb.KolaReply{Props: message}, nil
+	c := kexec.NewCmd("echo", "'test'")
+	statusChan := c.Start()
+	finalStatus := <-statusChan
+	return &pb.KolaReply{Props: finalStatus.Stdout}, nil
 }
 
 func StartServer() {
