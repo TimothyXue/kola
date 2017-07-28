@@ -2,20 +2,23 @@ package server
 
 import (
 	"fmt"
-	"golang.org/x/net/context"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/grpclog"
 	kexec "kola/exec"
 	pb "kola/pb"
 	"net"
+
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/grpclog"
 )
 
 const (
 	port = 5051
 )
 
+//KolaServer This is the server accept the client dial
 type KolaServer struct{}
 
+//Get the call information send from client
 func (k *KolaServer) Get(ctx context.Context, in *pb.KolaRequest) (*pb.KolaReply, error) {
 	message := in.Key
 	c := kexec.NewCmd("echo", "'test'")
@@ -24,6 +27,7 @@ func (k *KolaServer) Get(ctx context.Context, in *pb.KolaRequest) (*pb.KolaReply
 	return &pb.KolaReply{Props: append(message, finalStatus.Stdout...)}, nil
 }
 
+//StartServer used to start the Server
 func StartServer() {
 	lis, err := net.Listen("tcp4", fmt.Sprintf(":%d", port))
 	if err != nil {

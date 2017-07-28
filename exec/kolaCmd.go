@@ -15,6 +15,7 @@ import (
 	"time"
 )
 
+//KolaCmd is the cmmand struct to stores commands data
 type KolaCmd struct {
 	Name string
 	Args []string
@@ -31,6 +32,7 @@ type KolaCmd struct {
 	doneChan  chan Status
 }
 
+//Status contains the Status of command execution
 type Status struct {
 	Cmd       string
 	PID       int
@@ -58,6 +60,7 @@ func newOutput() *output {
 	}
 }
 
+// NewCmd helps to start a new KolaCmd
 func NewCmd(name string, args ...string) *KolaCmd {
 	return &KolaCmd{
 		Name: name,
@@ -141,6 +144,7 @@ func (c *KolaCmd) run() {
 	c.Unlock()
 }
 
+//Status returns the status of command execution
 func (c *KolaCmd) Status() Status {
 	c.Lock()
 	defer c.Unlock()
@@ -168,6 +172,7 @@ func (c *KolaCmd) Status() Status {
 	return c.status
 }
 
+// Start notify the command start to execute
 func (c *KolaCmd) Start() <-chan Status {
 	c.Lock()
 	defer c.Unlock()
@@ -181,6 +186,7 @@ func (c *KolaCmd) Start() <-chan Status {
 	return c.doneChan
 }
 
+// Stop notify the command to stop
 func (c *KolaCmd) Stop() error {
 	c.Lock()
 	defer c.Unlock()
