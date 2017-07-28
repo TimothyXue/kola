@@ -13,9 +13,9 @@ func main() {
 	} else if cmd.helpOption {
 		printUsage()
 	} else if cmd.startClient {
-		client.StartClient()
+		client.StartClient(cmd.portNumber)
 	} else if cmd.startServer {
-		server.StartServer()
+		server.StartServer(cmd.portNumber)
 	} else {
 		printUsage()
 	}

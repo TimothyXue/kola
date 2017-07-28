@@ -1,18 +1,20 @@
 package client
 
 import (
+	"fmt"
+	pb "kola/pb"
+
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
-	pb "kola/pb"
 )
 
 const (
 	serverAddr = "localhost:5051"
 )
 
-func StartClient() {
-	conn, err := grpc.Dial(serverAddr, grpc.WithInsecure())
+func StartClient(port int) {
+	conn, err := grpc.Dial(fmt.Sprintf(), grpc.WithInsecure())
 	if err != nil {
 		grpclog.Fatalf("did not connect： %v \n", err)
 	}

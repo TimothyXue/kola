@@ -11,12 +11,10 @@ import (
 	"google.golang.org/grpc/grpclog"
 )
 
-const (
-	port = 5051
-)
-
 //KolaServer This is the server accept the client dial
-type KolaServer struct{}
+type KolaServer struct {
+	portNumber string
+}
 
 //Get the call information send from client
 func (k *KolaServer) Get(ctx context.Context, in *pb.KolaRequest) (*pb.KolaReply, error) {
@@ -28,7 +26,7 @@ func (k *KolaServer) Get(ctx context.Context, in *pb.KolaRequest) (*pb.KolaReply
 }
 
 //StartServer used to start the Server
-func StartServer() {
+func StartServer(port int) {
 	lis, err := net.Listen("tcp4", fmt.Sprintf(":%d", port))
 	if err != nil {
 		grpclog.Fatalf("failed to listen: %v \n", err)

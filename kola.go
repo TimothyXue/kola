@@ -12,7 +12,15 @@ type KolaCmd struct {
 	versionOption bool
 	startClient   bool
 	startServer   bool
+	address       KolaHost
+
 	//args          []string
+}
+
+// KolaHost contains the address information to start server
+type KolaHost struct {
+	host string
+	port int
 }
 
 func parseCmd() *KolaCmd {
@@ -24,6 +32,9 @@ func parseCmd() *KolaCmd {
 	flag.BoolVar(&cmd.versionOption, "v", false, "demonstrate the version of Kola")
 	flag.BoolVar(&cmd.startClient, "client", false, "start kola client")
 	flag.BoolVar(&cmd.startServer, "server", false, "start kola server")
+	flag.StringVar(&cmd.address.host, "localhost", "define the host name for Kola service")
+	flag.IntVar(&cmd.address.port, "port", 5051, "define the port to connect or start")
+
 	flag.Parse()
 	//args := flag.Args()
 	return cmd
